@@ -18,22 +18,22 @@ namespace ValAPINet
             public object GameStartTime { get; set; }
             public string TeamID { get; set; }
         }
-        public static MatchHistory GetMatchHistory(Auth au, int startindex, int endindex, string queue, string playerid = "useauth")
+        public static MatchHistory GetMatchHistory(AuthorizationHandler au, int startindex, int endindex, string queue, string playerid = "useauth")
         {
             MatchHistory ret = new MatchHistory();
             if (playerid == "useauth")
             {
-                playerid = au.subject;
+                playerid = au.Subject;
             }
             string paramz = "?startIndex=" + startindex + "&endIndex=" + endindex + "&queue=" + queue;
-            RestClient client = new RestClient("https://pd." + au.region + ".a.pvp.net/match-history/v1/history/" + playerid + paramz);
-            client.CookieContainer = au.cookies;
+            RestClient client = new RestClient("https://pd." + au.Region + ".a.pvp.net/match-history/v1/history/" + playerid + paramz);
+            client.CookieContainer = au.Cookies;
 
             RestRequest request = new RestRequest(Method.GET);
             request.AddHeader("Authorization", $"Bearer {au.AccessToken}");
             request.AddHeader("X-Riot-Entitlements-JWT", $"{au.EntitlementToken}");
             request.AddHeader("X-Riot-ClientPlatform", $"ew0KCSJwbGF0Zm9ybVR5cGUiOiAiUEMiLA0KCSJwbGF0Zm9ybU9TIjogIldpbmRvd3MiLA0KCSJwbGF0Zm9ybU9TVmVyc2lvbiI6ICIxMC4wLjE5MDQyLjEuMjU2LjY0Yml0IiwNCgkicGxhdGZvcm1DaGlwc2V0IjogIlVua25vd24iDQp9");
-            request.AddHeader("X-Riot-ClientVersion", $"{au.version}");
+            request.AddHeader("X-Riot-ClientVersion", $"{au.ClientVersion}");
             //request.AddJsonBody("{}");
             var responce = client.Execute(request);
             string responcecontent = responce.Content;

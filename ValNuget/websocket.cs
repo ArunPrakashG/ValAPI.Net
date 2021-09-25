@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
@@ -11,7 +11,7 @@ namespace ValAPINet
 {
     public class Websocket
     {
-        public static Auth GetAuthLocal(bool WaitForLockfile = true)
+        public static AuthorizationHandler GetAuthLocal(bool WaitForLockfile = true)
         {
             string lockfile = "";
             if (WaitForLockfile == true)
@@ -70,12 +70,12 @@ namespace ValAPINet
                 obj = JObject.Parse(getResp.Content);
             else
                 return null;
-            Auth au = new Auth();
+            AuthorizationHandler au = new AuthorizationHandler();
             au.AccessToken = (string)obj["accessToken"];
             au.EntitlementToken = (string)obj["token"];
-            au.subject = (string)obj["subject"];
+            au.Subject = (string)obj["subject"];
             au.version = versionformat;
-            au.cookies = new CookieContainer();
+            au.Cookies = new CookieContainer();
 
             IRestClient RegClient = new RestClient(new Uri($"https://127.0.0.1:{lf[2]}/player-affinity/product/v1/token"));
             RegClient.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
@@ -107,7 +107,7 @@ namespace ValAPINet
             }
             return au;
         }
-        public static Auth StartAndGetAuthLocal(Region region)
+        public static AuthorizationHandler StartAndGetAuthLocal(Region region)
         {
             Process p = new Process();
             p.StartInfo.FileName = "C:\\Riot Games\\Riot Client\\RiotClientServices.exe";

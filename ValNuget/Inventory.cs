@@ -42,19 +42,19 @@ namespace ValAPINet
         public PlayerCardObj PlayerCard { get; set; }
         public PlayerTitleObj PlayerTitle { get; set; }
         public int StatusCode { get; set; }
-        public static Inventory GetInventory(Auth au)
+        public static Inventory GetInventory(AuthorizationHandler au)
         {
             Inventory ret = new Inventory();
-            string url = "https://pd." + au.region + ".a.pvp.net/personalization/v2/players/" + au.subject + "/playerloadout";
+            string url = "https://pd." + au.Region + ".a.pvp.net/personalization/v2/players/" + au.Subject + "/playerloadout";
             RestClient client = new RestClient(url);
-            client.CookieContainer = au.cookies;
+            client.CookieContainer = au.Cookies;
             //client.CookieContainer = new CookieContainer();
 
             RestRequest request = new RestRequest(Method.GET);
             request.AddHeader("Authorization", $"Bearer {au.AccessToken}");
             request.AddHeader("X-Riot-Entitlements-JWT", $"{au.EntitlementToken}");
             request.AddHeader("X-Riot-ClientPlatform", $"ew0KCSJwbGF0Zm9ybVR5cGUiOiAiUEMiLA0KCSJwbGF0Zm9ybU9TIjogIldpbmRvd3MiLA0KCSJwbGF0Zm9ybU9TVmVyc2lvbiI6ICIxMC4wLjE5MDQyLjEuMjU2LjY0Yml0IiwNCgkicGxhdGZvcm1DaGlwc2V0IjogIlVua25vd24iDQp9");
-            request.AddHeader("X-Riot-ClientVersion", $"{au.version}");
+            request.AddHeader("X-Riot-ClientVersion", $"{au.ClientVersion}");
 
             var responce = client.Execute(request);
             string responcecontent = responce.Content;
